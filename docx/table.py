@@ -402,7 +402,14 @@ class _Row(Parented):
             func_name='_add_' + position
             add_func=getattr(c._tc.get_or_add_tcPr().get_or_add_tcBorders(),func_name)
             add_func(**attrs)
+    
+    @property
+    def header(self):
+        return self._tr.header
 
+    @header.setter 
+    def header(self,value):
+        self._tr.header=value
 
 
 class _Rows(Parented):
@@ -432,3 +439,6 @@ class _Rows(Parented):
         Reference to the |Table| object this row collection belongs to.
         """
         return self._parent.table
+
+
+

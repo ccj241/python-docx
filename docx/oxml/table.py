@@ -66,6 +66,27 @@ class CT_Row(BaseOxmlElement):
     def _new_tc(self):
         return CT_Tc.new()
 
+    @property 
+    def header(self):
+        '''is this row table header'''
+        if self.trPr is not None:
+
+            if self.trPr.tblHeader is not None:
+                return True
+            else:
+                return False
+        else:
+            return False
+
+    @header.setter 
+    def header(self,value):
+        '''set/unset this row table header'''
+        if value ==True:
+            trPr=self.get_or_add_trPr()
+            trPr.get_or_add_tblHeader()
+        elif value == False:
+            if self.header:
+                self.trPr._remove_tblHeader()
 
 
 
@@ -340,6 +361,17 @@ class CT_TcBorders(BaseOxmlElement):
     _new_left=functools.partial(__new_border,'left')
     _new_bottom=functools.partial(__new_border,'bottom')
     _new_right=functools.partial(__new_border,'right')
+
+class CT_TrPr(BaseOxmlElement):
+    tblHeader=ZeroOrOne('w:tblHeader')
+
+
+class CT_TblHeader(BaseOxmlElement):
+    '''
+    used for ``<w:tblHeader/>`` elements  to specify a table header repeated in pages.
+    '''
+    pass
+
 
 class CT_Border(BaseOxmlElement):
     val=RequiredAttribute('w:val', ST_Border)
